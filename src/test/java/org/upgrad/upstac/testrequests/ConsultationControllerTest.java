@@ -175,12 +175,12 @@ class ConsultationControllerTest {
         // Return the object
 
         CreateLabResult labResult = new CreateLabResult();
-        labResult.setBloodPressure("80");
-        labResult.setHeartBeat("70");
-        labResult.setTemperature("97");
-        labResult.setOxygenLevel("99");
-        labResult.setComments("Reports are fine");
-        labResult.setResult(TestStatus.NEGATIVE);
+        labResult.setBloodPressure(testRequest.getLabResult().getBloodPressure());
+        labResult.setHeartBeat(testRequest.getLabResult().getHeartBeat());
+        labResult.setTemperature(testRequest.getLabResult().getTemperature());
+        labResult.setOxygenLevel(testRequest.getLabResult().getOxygenLevel());
+        labResult.setComments(testRequest.getLabResult().getComments());
+        labResult.setResult(testRequest.getLabResult().getResult());
 
         CreateConsultationRequest request = new CreateConsultationRequest();
         if(labResult.getResult().equals(TestStatus.POSITIVE)){
