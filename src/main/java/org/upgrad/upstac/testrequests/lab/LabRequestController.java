@@ -48,7 +48,12 @@ public class LabRequestController {
     private UserLoggedInService userLoggedInService;
 
 
-
+    /**
+     * This method delegates request to TestRequestQueryService to returns all the unassigned test request to be
+     * assigned by lab or tester
+     * GET method for user with role TESTER
+     * @return List of TestRequest
+     */
     @GetMapping("/to-be-tested")
     @PreAuthorize("hasAnyRole('TESTER')")
     public List<TestRequest> getForTests()  {
@@ -61,6 +66,11 @@ public class LabRequestController {
 
     }
 
+    /**
+     * This method delegates request to TestRequestQueryService to fetch all the test request assigned to particular tester
+     * GET method for user with role TESTER
+     * @return List of TestRequest
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('TESTER')")
     public List<TestRequest> getForTester()  {
@@ -81,17 +91,29 @@ public class LabRequestController {
     }
 
 
+    /**
+     * This method delegates request to TestRequestUpdateService to assign a pending test request to the particular tester
+     * and return that TestRequest to be updated by tester
+     * PUT method for user with role TESTER
+     * @param id
+     * @return TestRequest
+     */
     @PreAuthorize("hasAnyRole('TESTER')")
     @PutMapping("/assign/{id}")
     public TestRequest assignForLabTest(@PathVariable Long id) {
 
-
-
         User tester =userLoggedInService.getLoggedInUser();
-
-      return   testRequestUpdateService.assignForLabTest(id,tester);
+        return   testRequestUpdateService.assignForLabTest(id,tester);
     }
 
+    /**
+     * This method delegates request to TestRequestUpdateService which takes an existing test request id and lab reports,
+     * update lab reports in database and finalise it as lab complete and return finalised TestRequest
+     * PUT method for user with role TESTER
+     * @param id
+     * @param createLabResult
+     * @return TestRequest
+     */
     @PreAuthorize("hasAnyRole('TESTER')")
     @PutMapping("/update/{id}")
     public TestRequest updateLabTest(@PathVariable Long id,@RequestBody CreateLabResult createLabResult) {

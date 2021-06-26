@@ -47,7 +47,12 @@ public class ConsultationController {
     private UserLoggedInService userLoggedInService;
 
 
-
+    /**
+     * The method checks delegates request to TestRequestQueryService,
+     * which later checks database for any pending/ unassigned consultation request which can be assigned to the particular doctor
+     * GET request for user who has role of DOCTOR
+     * @return List of consultation request available for doctor
+     */
     @GetMapping("/in-queue")
     @PreAuthorize("hasAnyRole('DOCTOR')")
     public List<TestRequest> getForConsultations()  {
@@ -69,6 +74,12 @@ public class ConsultationController {
 
     }
 
+    /**
+     * The function delegates request to TestRequestQueryService
+     * which then checks the database for any consultation request assigned to that doctor
+     * GET request for user whop has role of DOCTOR
+     * @return List of TestRequest which is assigned to a particular doctor
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('DOCTOR')")
     public List<TestRequest> getForDoctor()  {
@@ -93,7 +104,13 @@ public class ConsultationController {
     }
 
 
-
+    /**
+     * It delegates request to TestRequestUpdateService which takes id of existing test request and
+     * allows it to be updated by doctor.
+     * PUT method for user with role DOCTOR
+     * @param id
+     * @return TestRequest object
+     */
     @PreAuthorize("hasAnyRole('DOCTOR')")
     @PutMapping("/assign/{id}")
     public TestRequest assignForConsultation(@PathVariable Long id) {
@@ -118,7 +135,13 @@ public class ConsultationController {
     }
 
 
-
+    /**
+     * The method delegates request to TestRequestUpdateService, update the consultation and finalise its status to complete.
+     * PUT method for user with role DOCTOR
+     * @param id
+     * @param testResult
+     * @return TestRequest
+     */
     @PreAuthorize("hasAnyRole('DOCTOR')")
     @PutMapping("/update/{id}")
     public TestRequest updateConsultation(@PathVariable Long id,@RequestBody CreateConsultationRequest testResult) {
