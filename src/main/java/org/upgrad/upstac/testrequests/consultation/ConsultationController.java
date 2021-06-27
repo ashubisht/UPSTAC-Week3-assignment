@@ -93,8 +93,14 @@ public class ConsultationController {
 
         // replace this line of code with your implementation
 
-        User doctor = userLoggedInService.getLoggedInUser();
-        return testRequestQueryService.findByDoctor(doctor);
+        try{
+            User doctor = userLoggedInService.getLoggedInUser();
+            return testRequestQueryService.findByDoctor(doctor);
+        } catch (ConstraintViolationException e) {
+            throw asConstraintViolation(e);
+        }catch (AppException e) {
+            throw asBadRequest(e.getMessage());
+        }
 
         // throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented");
 

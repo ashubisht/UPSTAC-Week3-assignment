@@ -82,8 +82,14 @@ public class LabRequestController {
         //Make use of the findByTester() method from testRequestQueryService class
         // For reference check the method getForTests() method from LabRequestController class
 
-        User tester = userLoggedInService.getLoggedInUser();
-        return testRequestQueryService.findByTester(tester);
+        try{
+            User tester = userLoggedInService.getLoggedInUser();
+            return testRequestQueryService.findByTester(tester);
+        }catch (ConstraintViolationException e) {
+            throw asConstraintViolation(e);
+        }catch (AppException e) {
+            throw asBadRequest(e.getMessage());
+        }
 
         //throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented"); // replace this line with your code
 
@@ -102,8 +108,18 @@ public class LabRequestController {
     @PutMapping("/assign/{id}")
     public TestRequest assignForLabTest(@PathVariable Long id) {
 
-        User tester =userLoggedInService.getLoggedInUser();
-        return   testRequestUpdateService.assignForLabTest(id,tester);
+        try {
+
+            User tester =userLoggedInService.getLoggedInUser();
+            return   testRequestUpdateService.assignForLabTest(id,tester);
+
+
+        } catch (ConstraintViolationException e) {
+            throw asConstraintViolation(e);
+        }catch (AppException e) {
+            throw asBadRequest(e.getMessage());
+        }
+
     }
 
     /**
